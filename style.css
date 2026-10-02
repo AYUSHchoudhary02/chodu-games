@@ -1,0 +1,665 @@
+/* =========================================================
+   CHODU GAMES
+   AYUSH & SUJAL
+   MOBILE SWORD GAME
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #03050a;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+}
+
+body {
+    touch-action: none;
+}
+
+/* =========================================================
+   CANVAS
+========================================================= */
+
+#gameCanvas {
+    position: fixed;
+    inset: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    display: none;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #071329 0%,
+            #172c42 50%,
+            #090b10 100%
+        );
+}
+
+/* =========================================================
+   SCREENS
+========================================================= */
+
+.screen {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 20;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #14284a 0%,
+            #070b14 45%,
+            #010205 100%
+        );
+
+    overflow: hidden;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* =========================================================
+   INTRO
+========================================================= */
+
+.introGlow {
+    position: absolute;
+
+    width: 500px;
+    height: 500px;
+
+    border-radius: 50%;
+
+    background: #1769ff;
+
+    filter: blur(150px);
+
+    opacity: 0.25;
+
+    animation: pulseGlow 3s infinite alternate;
+}
+
+@keyframes pulseGlow {
+
+    from {
+        transform: scale(0.8);
+        opacity: 0.15;
+    }
+
+    to {
+        transform: scale(1.3);
+        opacity: 0.35;
+    }
+}
+
+.studio {
+    position: relative;
+
+    font-size: clamp(45px, 10vw, 110px);
+
+    font-weight: 1000;
+
+    letter-spacing: 10px;
+
+    color: white;
+
+    text-shadow:
+        0 0 10px #257cff,
+        0 0 30px #257cff,
+        0 0 70px #257cff;
+
+    animation: studioIntro 1.4s ease-out;
+}
+
+.studio span {
+    color: #ff173d;
+}
+
+@keyframes studioIntro {
+
+    from {
+        transform: scale(2);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.introSword {
+    position: relative;
+
+    margin: 15px;
+
+    font-size: 70px;
+
+    filter:
+        drop-shadow(0 0 15px #7edfff)
+        drop-shadow(0 0 35px #3caeff);
+
+    animation: swordFloat 2s infinite ease-in-out;
+}
+
+@keyframes swordFloat {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(-8deg);
+    }
+
+    50% {
+        transform: translateY(-15px) rotate(8deg);
+    }
+}
+
+.screen h1 {
+    position: relative;
+
+    font-size: clamp(35px, 8vw, 75px);
+
+    letter-spacing: 5px;
+
+    text-shadow: 0 5px 30px black;
+}
+
+.screen h1 span {
+    color: #ffbd22;
+}
+
+.tagline {
+    position: relative;
+
+    margin-top: 10px;
+    margin-bottom: 35px;
+
+    color: #9fb9d7;
+
+    letter-spacing: 7px;
+
+    font-size: 13px;
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+button {
+    border: none;
+    outline: none;
+    cursor: pointer;
+
+    font-family: inherit;
+
+    touch-action: manipulation;
+}
+
+.mainButton,
+.secondaryButton {
+    position: relative;
+
+    min-width: 220px;
+
+    padding: 16px 30px;
+
+    margin: 7px;
+
+    border-radius: 8px;
+
+    font-size: 16px;
+
+    font-weight: 900;
+
+    letter-spacing: 2px;
+
+    transition: 0.2s;
+}
+
+.mainButton {
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff1744,
+            #a90024
+        );
+
+    box-shadow:
+        0 0 20px rgba(255, 23, 68, 0.4),
+        inset 0 1px rgba(255,255,255,0.3);
+}
+
+.secondaryButton {
+    color: #c9dcf7;
+
+    background: rgba(255,255,255,0.06);
+
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.mainButton:hover,
+.secondaryButton:hover {
+    transform: scale(1.05);
+}
+
+/* =========================================================
+   INSTRUCTIONS
+========================================================= */
+
+.instructionBox {
+    position: relative;
+
+    width: min(90%, 600px);
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    padding: 35px;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(19,38,67,0.95),
+            rgba(4,8,15,0.98)
+        );
+
+    border: 1px solid rgba(92,171,255,0.3);
+
+    box-shadow:
+        0 0 60px rgba(0,100,255,0.15);
+}
+
+.instructionBox h2 {
+    text-align: center;
+
+    font-size: 30px;
+
+    margin-bottom: 25px;
+
+    color: #64c7ff;
+}
+
+.instructionItem {
+    margin: 15px 0;
+
+    padding: 15px;
+
+    border-left: 3px solid #238cff;
+
+    background: rgba(255,255,255,0.04);
+
+    border-radius: 5px;
+}
+
+.instructionItem b {
+    color: #ffd34d;
+
+    letter-spacing: 1px;
+}
+
+.instructionItem p {
+    margin-top: 7px;
+
+    color: #aebed2;
+
+    line-height: 1.5;
+}
+
+/* =========================================================
+   HUD
+========================================================= */
+
+#hud {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 10;
+
+    pointer-events: none;
+}
+
+.topHUD {
+    position: absolute;
+
+    top: 18px;
+    left: 15px;
+    right: 15px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+}
+
+.heroHUD {
+    width: min(30vw, 280px);
+}
+
+.sujalHUD {
+    text-align: right;
+}
+
+.heroName {
+    margin-bottom: 5px;
+
+    font-weight: 900;
+
+    font-size: 13px;
+
+    letter-spacing: 2px;
+}
+
+.ayushHUD .heroName {
+    color: #48a9ff;
+}
+
+.sujalHUD .heroName {
+    color: #ff536e;
+}
+
+.healthOuter {
+    height: 14px;
+
+    background: #080b10;
+
+    border: 1px solid rgba(255,255,255,0.3);
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    box-shadow: 0 0 10px black;
+}
+
+.healthBar {
+    height: 100%;
+
+    width: 100%;
+
+    transition: width 0.25s;
+
+    border-radius: inherit;
+}
+
+.ayushHealth {
+    background:
+        linear-gradient(
+            90deg,
+            #0077ff,
+            #59c6ff
+        );
+
+    box-shadow: 0 0 15px #008cff;
+}
+
+.sujalHealth {
+    background:
+        linear-gradient(
+            90deg,
+            #ff214d,
+            #ff8a48
+        );
+
+    box-shadow: 0 0 15px #ff214d;
+}
+
+.wave {
+    font-weight: 900;
+
+    color: #ffd34d;
+
+    text-shadow: 0 2px 10px black;
+}
+
+#message {
+    position: absolute;
+
+    top: 90px;
+
+    width: 100%;
+
+    text-align: center;
+
+    font-weight: 900;
+
+    font-size: 20px;
+
+    color: white;
+
+    text-shadow:
+        0 2px 5px black,
+        0 0 20px #4aaeff;
+
+    opacity: 0;
+
+    transition: 0.3s;
+}
+
+/* =========================================================
+   MOBILE CONTROLS
+========================================================= */
+
+#mobileControls {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 15;
+
+    pointer-events: none;
+}
+
+.joystick {
+    position: absolute;
+
+    left: 30px;
+    bottom: 30px;
+
+    width: 130px;
+    height: 130px;
+
+    border-radius: 50%;
+
+    background: rgba(100,160,220,0.12);
+
+    border: 2px solid rgba(160,210,255,0.25);
+
+    pointer-events: auto;
+
+    backdrop-filter: blur(5px);
+}
+
+#joystickKnob {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 55px;
+    height: 55px;
+
+    transform: translate(-50%, -50%);
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            #7fd5ff,
+            #1976d2
+        );
+
+    box-shadow:
+        0 0 20px #178cff;
+}
+
+.actionButtons {
+    position: absolute;
+
+    right: 30px;
+    bottom: 30px;
+
+    display: flex;
+
+    align-items: flex-end;
+
+    gap: 15px;
+
+    pointer-events: auto;
+}
+
+.gameButton {
+    width: 75px;
+    height: 75px;
+
+    border-radius: 50%;
+
+    color: white;
+
+    font-size: 30px;
+
+    font-weight: 900;
+
+    border: 2px solid rgba(255,255,255,0.3);
+
+    box-shadow:
+        0 5px 20px rgba(0,0,0,0.5);
+
+    transition: transform 0.1s;
+}
+
+.gameButton:active {
+    transform: scale(0.85);
+}
+
+.attack {
+    background:
+        radial-gradient(
+            circle,
+            #ff596e,
+            #a90022
+        );
+}
+
+.special {
+    width: 65px;
+    height: 65px;
+
+    background:
+        radial-gradient(
+            circle,
+            #ffd84a,
+            #ff7600
+        );
+}
+
+/* =========================================================
+   GAME OVER
+========================================================= */
+
+.gameOverBox {
+    text-align: center;
+
+    padding: 45px;
+
+    background: rgba(5,10,20,0.92);
+
+    border: 1px solid rgba(255,255,255,0.15);
+
+    border-radius: 20px;
+
+    box-shadow: 0 0 70px rgba(0,0,0,0.8);
+}
+
+.gameOverTitle {
+    font-size: 40px;
+
+    font-weight: 1000;
+
+    color: #ff3859;
+
+    margin-bottom: 20px;
+}
+
+#resultText {
+    color: #d5e3f2;
+
+    margin-bottom: 20px;
+
+    font-size: 18px;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .topHUD {
+        top: 10px;
+    }
+
+    .heroHUD {
+        width: 32vw;
+    }
+
+    .wave {
+        font-size: 12px;
+    }
+
+    .healthOuter {
+        height: 10px;
+    }
+
+    .joystick {
+        width: 115px;
+        height: 115px;
+
+        left: 20px;
+        bottom: 20px;
+    }
+
+    .actionButtons {
+        right: 20px;
+        bottom: 20px;
+    }
+
+    .gameButton {
+        width: 68px;
+        height: 68px;
+    }
+
+    .gameOverBox {
+        width: 90%;
+        padding: 30px 20px;
+    }
+}
